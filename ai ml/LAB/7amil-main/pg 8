@@ -1,0 +1,29 @@
+from sklearn import neighbors
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+from sklearn.datasets import load_iris
+
+data=load_iris()
+df=pd.DataFrame(data.data, columns=data.feature_names)
+df['Class']=data.target_names[data.target]
+df.head()
+x=df.iloc[:,:-1].values
+y=df.Class.values
+print(x[0:5])
+print(y[0:5])
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test=train_test_split(x,y, test_size=0.2)
+
+from sklearn.neighbors import KNeighborsClassifier
+knn_classi=KNeighborsClassifier(n_neighbors=5)
+knn_classi.fit(x_train, y_train)
+predictions=knn_classi.predict(x_test)
+print(predictions)
+
+from sklearn.metrics import accuracy_score, confusion_matrix
+print("Training Accuracy score is :",accuracy_score(y_train,knn_classi.predict(x_train)))
+print("Testing Accuracy score is :",accuracy_score(y_test,knn_classi.predict(x_test)))
+print("Training Confusion matrix is: \n",confusion_matrix(y_train,knn_classi.predict(x_train)))
+print("Testing Confusion matrix score:is \n",confusion_matrix(y_test,knn_classi.predict(x_test)))
